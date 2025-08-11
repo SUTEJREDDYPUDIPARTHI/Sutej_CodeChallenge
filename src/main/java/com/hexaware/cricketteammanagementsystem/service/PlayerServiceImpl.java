@@ -3,6 +3,7 @@ package com.hexaware.cricketteammanagementsystem.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hexaware.cricketteammanagementsystem.dto.PlayerDTO;
@@ -13,11 +14,8 @@ import com.hexaware.cricketteammanagementsystem.repository.PlayerRepository;
 @Service
 public class PlayerServiceImpl implements IPlayerService {
 
-    private final PlayerRepository repository;
-
-    public PlayerServiceImpl(PlayerRepository repository) {
-        this.repository = repository;
-    }
+	@Autowired
+    private PlayerRepository repository;
 
     private PlayerDTO toDTO(Player p) {
         PlayerDTO dto = new PlayerDTO();
@@ -66,6 +64,16 @@ public class PlayerServiceImpl implements IPlayerService {
         Player p = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Player not found with id: " + id));
         return toDTO(p);
+    }
+    
+    @Override
+    public List<PlayerDTO> getPlayersByName(String playerName) {
+        List<Player> players = repository.findByPlayerName(playerName);
+        List<PlayerDTO> dtos = new ArrayList<>();
+        for (Player p : players) {
+            dtos.add(toDTO(p));
+        }
+        return dtos;
     }
 
     @Override

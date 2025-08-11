@@ -3,6 +3,8 @@ package com.hexaware.cricketteammanagementsystem.controller;
 import com.hexaware.cricketteammanagementsystem.dto.PlayerDTO;
 import com.hexaware.cricketteammanagementsystem.service.IPlayerService;
 import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +22,13 @@ import java.util.List;
 @RequestMapping("/api/players")
 public class PlayerController {
 
-    private final IPlayerService service;
-
-    public PlayerController(IPlayerService service) {
-        this.service = service;
+	@Autowired
+    private IPlayerService service;
+    
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PlayerDTO createPlayer(@Valid @RequestBody PlayerDTO dto) {
+        return service.createPlayer(dto);
     }
 
     @GetMapping("/getall")
@@ -31,15 +36,14 @@ public class PlayerController {
         return service.getAllPlayers();
     }
 
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public PlayerDTO createPlayer(@Valid @RequestBody PlayerDTO dto) {
-        return service.createPlayer(dto);
-    }
-
     @GetMapping("/getbyid/{playerId}")
     public PlayerDTO getPlayerById(@PathVariable Long playerId) {
         return service.getPlayerById(playerId);
+    }
+    
+    @GetMapping("/name/{playerName}")
+    public List<PlayerDTO> getPlayersByName(@PathVariable String playerName) {
+        return service.getPlayersByName(playerName);
     }
 
     @PutMapping("/update/{playerId}")
