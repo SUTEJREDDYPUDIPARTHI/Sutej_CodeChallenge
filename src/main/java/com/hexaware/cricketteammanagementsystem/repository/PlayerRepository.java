@@ -9,6 +9,6 @@ import com.hexaware.cricketteammanagementsystem.entity.Player;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long>{
-	List<Player> findByPlayerName(String playerName);
+	List<Player> findAllByOrderByJerseyNumberAsc();
 
 }

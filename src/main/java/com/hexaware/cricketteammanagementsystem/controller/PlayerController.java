@@ -40,11 +40,6 @@ public class PlayerController {
     public PlayerDTO getPlayerById(@PathVariable Long playerId) {
         return service.getPlayerById(playerId);
     }
-    
-    @GetMapping("/name/{playerName}")
-    public List<PlayerDTO> getPlayersByName(@PathVariable String playerName) {
-        return service.getPlayersByName(playerName);
-    }
 
     @PutMapping("/update/{playerId}")
     public PlayerDTO updatePlayer(@PathVariable Long playerId, @Valid @RequestBody PlayerDTO dto) {
@@ -55,6 +50,11 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePlayer(@PathVariable Long playerId) {
         service.deletePlayer(playerId);
+    }
+    
+    @GetMapping("/sortedByJersey")
+    public List<PlayerDTO> getPlayersSortedByJerseyNumber() {
+        return service.getAllPlayersSortedByJerseyNumber();
     }
 
 }

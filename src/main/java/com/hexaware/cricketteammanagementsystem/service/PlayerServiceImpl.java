@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.hexaware.cricketteammanagementsystem.dto.PlayerDTO;
 import com.hexaware.cricketteammanagementsystem.entity.Player;
-import com.hexaware.cricketteammanagementsystem.exception.ResourceNotFoundException;
+import com.hexaware.cricketteammanagementsystem.exception.PlayerNotFoundException;
 import com.hexaware.cricketteammanagementsystem.repository.PlayerRepository;
 
 @Service
@@ -62,24 +62,14 @@ public class PlayerServiceImpl implements IPlayerService {
     @Override
     public PlayerDTO getPlayerById(Long id) {
         Player p = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Player not found with id: " + id));
+                .orElseThrow(() -> new 	PlayerNotFoundException("Player not found with id: " + id));
         return toDTO(p);
-    }
-    
-    @Override
-    public List<PlayerDTO> getPlayersByName(String playerName) {
-        List<Player> players = repository.findByPlayerName(playerName);
-        List<PlayerDTO> dtos = new ArrayList<>();
-        for (Player p : players) {
-            dtos.add(toDTO(p));
-        }
-        return dtos;
     }
 
     @Override
     public PlayerDTO updatePlayer(Long id, PlayerDTO dto) {
         Player existing = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Player not found with id: " + id));
+                .orElseThrow(() -> new PlayerNotFoundException("Player not found with id: " + id));
 
         existing.setPlayerName(dto.getPlayerName());
         existing.setJerseyNumber(dto.getJerseyNumber());
@@ -96,7 +86,28 @@ public class PlayerServiceImpl implements IPlayerService {
     @Override
     public void deletePlayer(Long id) {
         Player existing = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Player not found with id: " + id));
+                .orElseThrow(() -> new PlayerNotFoundException("Player not found with id: " + id));
         repository.delete(existing);
+    }
+    
+    @Override
+    public List<PlayerDTO> getAllPlayersSortedByJerseyNumber() {
+        List<Player> players = repository.findAllByOrderByJerseyNumberAsc();
+        List<PlayerDTO> dtoList = new ArrayList<>();
+        
+        for (Player player : players) {
+            PlayerDTO dto = new PlayerDTO();
+            dto.setPlayerId(player.getPlayerId());
+            dto.setPlayerName(player.getPlayerName());
+            dto.setJerseyNumber(player.getJerseyNumber());
+            dto.setRole(player.getRole());
+            dto.setTotalMatches(player.getTotalMatches());
+            dto.setTeamName(player.getTeamName());
+            dto.setCountry(player.getCountry());
+            dto.setDescription(player.getDescription());
+            dtoList.add(dto);
+        }
+
+        return dtoList;
     }
 }
