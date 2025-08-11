@@ -117,6 +117,4 @@ public class Player {
 				+ country + ", description=" + description + "]";
 	}
     
-   
-    
 }

@@ -1,8 +1,8 @@
 package com.hexaware.cricketteammanagementsystem.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -13,12 +13,12 @@ public class PlayerDTO {
     @NotBlank(message = "Player name is required")
     private String playerName;
 
-    @Min(value = 1, message = "Jersey number must be >=1")
+    @Min(value = 1, message = "Jersey number must be >= 1")
     @Max(value = 999, message = "Jersey number must be <= 999")
     private Integer jerseyNumber;
 
     @NotBlank(message = "Role is required")
-    @Pattern(regexp = "Batsman|Bowler|Keeper|All Rounder", message ="A valid role must be required")
+    @Pattern(regexp = "Batsman|Bowler|Keeper|All Rounder", message = "A valid role must be required")
     private String role;
 
     @Min(value = 1, message = "Total matches must be >=1")

@@ -1,8 +1,8 @@
 package com.hexaware.cricketteammanagementsystem.service;
 
-import java.util.List;
-
 import com.hexaware.cricketteammanagementsystem.dto.PlayerDTO;
+
+import java.util.List;
 
 public interface IPlayerService {
     List<PlayerDTO> getAllPlayers();
